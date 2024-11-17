@@ -1,0 +1,27 @@
+﻿{
+  "Name": "ConfigUI",
+  "Author": "Enaium",
+  "Version": "1.0.0",
+  "Description": "This mod can config all mods and the mod doesn't need to do special things.",
+  "UniqueID": "Enaium.ConfigUI",
+  "EntryDll": "ConfigUI.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "CurseForge:1142881"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.8.0"
+    }
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Setting": "ConfigUI.Framework.Gui.ConfigUIScreen",
+      "Contact": {
+        "HomePage": "https://github.com/Enaium/sdv-mod-ConfigUI",
+        "Issues": "https://github.com/Enaium/sdv-mod-ConfigUI/issues"
+      }
+    }
+  }
+}

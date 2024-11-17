@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IgnoreModFilePaths>EnaiumToolKit.dll</IgnoreModFilePaths>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="EnaiumToolKit">
+        <HintPath>..\..\EnaiumToolKit\EnaiumToolKit\bin\Debug\net6.0\EnaiumToolKit.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
