@@ -90,46 +90,6 @@ public class ConfigScreen : ScreenGui
                 }
             );
         }
-        else if (property.PropertyType.IsEnum)
-        {
-            var enumOptions = new List<EnumOption>();
-
-            foreach (var value in Enum.GetNames(property.PropertyType))
-            {
-                var fieldInfo = property.PropertyType.GetField(value);
-                if (fieldInfo == null) continue;
-                var display = fieldInfo.GetCustomAttribute<Display>();
-                if (display != null)
-                {
-                    var displayName = display.GetName();
-                    if (displayName.StartsWith("{") && displayName.EndsWith("}"))
-                    {
-                        displayName = mod.Helper.Translation.Get(displayName[1..^1]);
-                    }
-
-                    var displayDisplayName = display.GetDescription();
-                    if (displayDisplayName != null && displayDisplayName.StartsWith("{") &&
-                        displayDisplayName.EndsWith("}"))
-                    {
-                        displayDisplayName = mod.Helper.Translation.Get(displayDisplayName[1..^1]);
-                    }
-
-                    display = new Display(displayName, displayDisplayName);
-                }
-
-                enumOptions.Add(display != null
-                    ? new EnumOption(display, value)
-                    : new EnumOption(new Display(value, null), value));
-            }
-
-            AddElement(new ComboBox<EnumOption>(name, string.Join(',', enumOptions.Select(it =>
-                $"{it.Display.GetName()}{(it.Display.GetDescription() != null ? $" - {it.Display.GetDescription()}" : "")}")))
-            {
-                Options = enumOptions,
-                Current = enumOptions.Find(it => it.Value == current.ToString()),
-                OnCurrentChanged = value => { SetValue(Enum.Parse(property.PropertyType, value.Value.ToString())); }
-            });
-        }
         else if (property.PropertyType == typeof(Color))
         {
             AddElement(new ColorPicker("", null, (Color)current)
@@ -178,6 +138,46 @@ public class ConfigScreen : ScreenGui
             {
                 AddElement(KeyBindCheckBox(keyBind, modifiedKeys));
             }
+        }
+        else if (property.PropertyType.IsEnum)
+        {
+            var enumOptions = new List<EnumOption>();
+
+            foreach (var value in Enum.GetNames(property.PropertyType))
+            {
+                var fieldInfo = property.PropertyType.GetField(value);
+                if (fieldInfo == null) continue;
+                var display = fieldInfo.GetCustomAttribute<Display>();
+                if (display != null)
+                {
+                    var displayName = display.GetName();
+                    if (displayName.StartsWith("{") && displayName.EndsWith("}"))
+                    {
+                        displayName = mod.Helper.Translation.Get(displayName[1..^1]);
+                    }
+
+                    var displayDisplayName = display.GetDescription();
+                    if (displayDisplayName != null && displayDisplayName.StartsWith("{") &&
+                        displayDisplayName.EndsWith("}"))
+                    {
+                        displayDisplayName = mod.Helper.Translation.Get(displayDisplayName[1..^1]);
+                    }
+
+                    display = new Display(displayName, displayDisplayName);
+                }
+
+                enumOptions.Add(display != null
+                    ? new EnumOption(display, value)
+                    : new EnumOption(new Display(value, null), value));
+            }
+
+            AddElement(new ComboBox<EnumOption>(name, string.Join(',', enumOptions.Select(it =>
+                $"{it.Display.GetName()}{(it.Display.GetDescription() != null ? $" - {it.Display.GetDescription()}" : "")}")))
+            {
+                Options = enumOptions,
+                Current = enumOptions.Find(it => it.Value == current.ToString()),
+                OnCurrentChanged = value => { SetValue(Enum.Parse(property.PropertyType, value.Value.ToString())); }
+            });
         }
     }
 
