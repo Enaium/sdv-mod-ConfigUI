@@ -156,14 +156,33 @@ public class ConfigScreen : ScreenGui
                         displayName = mod.Helper.Translation.Get(displayName[1..^1]);
                     }
 
-                    var displayDisplayName = display.GetDescription();
-                    if (displayDisplayName != null && displayDisplayName.StartsWith("{") &&
-                        displayDisplayName.EndsWith("}"))
+                    var displayDescription = display.GetDescription();
+                    if (displayDescription != null && displayDescription.StartsWith("{") &&
+                        displayDescription.EndsWith("}"))
                     {
-                        displayDisplayName = mod.Helper.Translation.Get(displayDisplayName[1..^1]);
+                        displayDescription = mod.Helper.Translation.Get(displayDescription[1..^1]);
                     }
 
-                    display = new Display(displayName, displayDisplayName);
+                    display = new Display(displayName, displayDescription);
+                }
+                mod.Monitor.Log($"{property.PropertyType.FullName}.{value}.Name", LogLevel.Debug);
+                var nameTranslation = mod.Helper.Translation.Get($"{property.PropertyType.FullName}.{value}.Name");
+                var descriptionTranslation =
+                    mod.Helper.Translation.Get($"{property.PropertyType.FullName}.{value}.Description");
+
+                mod.Monitor.Log(nameTranslation, LogLevel.Debug);
+                if (display == null)
+                {
+                    string? displayDescription = null;
+                    if (!descriptionTranslation.ToString().Contains("no translation:"))
+                    {
+                        displayDescription = descriptionTranslation;
+                    }
+
+                    if (!nameTranslation.ToString().Contains("no translation:"))
+                    {
+                        display = new Display(nameTranslation, displayDescription);
+                    }
                 }
 
                 enumOptions.Add(display != null

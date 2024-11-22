@@ -15,14 +15,14 @@ public class AllConfigScreen : ScreenGui
     {
         var configProperties = config.GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-        
+
         object? defaultConfig = null;
         foreach (var configPropertyInfo in configProperties)
         {
             if (!configPropertyInfo.Name.Equals("Default", StringComparison.CurrentCultureIgnoreCase)) continue;
             defaultConfig = configPropertyInfo.GetValue(config);
         }
-        
+
         if (defaultConfig == null)
         {
             try
@@ -66,6 +66,21 @@ public class AllConfigScreen : ScreenGui
                 }
             }
             
+            var nameTranslation =
+                mod.Helper.Translation.Get($"{config.GetType().FullName}.{configPropertyInfo.Name}.Name");
+            var descriptionTranslation =
+                mod.Helper.Translation.Get($"{config.GetType().FullName}.{configPropertyInfo.Name}.Description");
+
+            if (!nameTranslation.ToString().Contains("no translation:"))
+            {
+                name = nameTranslation;
+            }
+
+            if (!descriptionTranslation.ToString().Contains("no translation:"))
+            {
+                description = descriptionTranslation;
+            }
+
             var config1 = defaultConfig;
             AddElement(new Button(
                 name,
